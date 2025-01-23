@@ -5,6 +5,7 @@ import "./QuestionPage.css";
 const QuestionPage = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [showHintText, setShowHintText] = useState(false);
   const [showHintImage, setShowHintImage] = useState(false);
 
@@ -26,6 +27,7 @@ const QuestionPage = () => {
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedOptionIndex(null); // Réinitialiser la sélection
       setShowHintText(false);
       setShowHintImage(false);
     }
@@ -37,6 +39,10 @@ const QuestionPage = () => {
 
   const toggleHintImage = () => {
     setShowHintImage(!showHintImage);
+  };
+
+  const handleOptionClick = (index) => {
+    setSelectedOptionIndex(index);
   };
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -52,13 +58,28 @@ const QuestionPage = () => {
 
         <div className="answers">
           {currentQuestion.options.map((option, index) => (
-            <button key={index} className="answer-btn">
+            <button
+              key={index}
+              className={`answer-btn ${
+                selectedOptionIndex === index
+                  ? option.correct
+                    ? "correct"
+                    : "wrong"
+                  : ""
+              }`}
+              onClick={() => handleOptionClick(index)}
+              disabled={selectedOptionIndex !== null} // Désactiver après une sélection
+            >
               {option.text}
             </button>
           ))}
         </div>
 
-        <button className="next-btn" onClick={handleNext}>
+        <button
+          className="next-btn"
+          onClick={handleNext}
+          disabled={selectedOptionIndex === null} // Activer seulement après une sélection
+        >
           SUIVANT
         </button>
 

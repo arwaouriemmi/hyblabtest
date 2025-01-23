@@ -39,14 +39,23 @@ body {
   }
   
   .answer-btn {
-    padding: 10px;
-    border: 2px solid #0d192e;
-    border-radius: 25px;
-    background-color: transparent;
-    color: #0d192e;
-    font-weight: bold;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: 0.3s;
+    background-color: lightgray;
+    font-size: 16px;
+  }
+  
+  .answer-btn.correct {
+    background-color: green;
+    color: white;
+  }
+  
+  .answer-btn.wrong {
+    background-color: red;
+    color: white;
   }
   
   .answer-btn:hover {
@@ -90,11 +99,7 @@ body {
     color: white;
   }
   
-  .next-btn {
-    background-color: white;
-    color: #0d192e;
-    border: 2px solid #0d192e;
-  }
+
   
   .next-btn:hover {
     background-color: #0d192e;
@@ -153,6 +158,21 @@ body {
     border-radius: 10px;
     margin-top: 10px;
   }
+  .next-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: white;
+    color: #0d192e;
+    border: 2px solid #0d192e;
+    cursor: pointer;
+  }
+  
+  .next-btn:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+
+
   
   
   
