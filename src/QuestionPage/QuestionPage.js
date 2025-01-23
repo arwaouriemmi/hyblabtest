@@ -38,7 +38,11 @@ const QuestionPage = () => {
   };
 
   const toggleHintImage = () => {
-    setShowHintImage(!showHintImage);
+    if (showHintText) {
+      setShowHintImage(!showHintImage);
+    } else {
+      alert("Vous devez d'abord ouvrir l'indice 1 !");
+    }
   };
 
   const handleOptionClick = (index) => {
@@ -60,12 +64,13 @@ const QuestionPage = () => {
           {currentQuestion.options.map((option, index) => (
             <button
               key={index}
-              className={`answer-btn ${selectedOptionIndex === index
+              className={`answer-btn ${
+                selectedOptionIndex === index
                   ? option.correct
                     ? "correct"
                     : "wrong"
                   : ""
-                }`}
+              }`}
               onClick={() => handleOptionClick(index)}
               disabled={selectedOptionIndex !== null} // Désactiver après une sélection
             >
@@ -73,7 +78,6 @@ const QuestionPage = () => {
             </button>
           ))}
         </div>
-
         {/* Lien global vers l'article */}
         {currentQuestion.hints.link && (
           <p className="article-link">
@@ -86,8 +90,6 @@ const QuestionPage = () => {
             </a>
           </p>
         )}
-
-
         <button
           className="next-btn"
           onClick={handleNext}
@@ -103,22 +105,20 @@ const QuestionPage = () => {
               {showHintText ? "−" : "+"}
             </button>
             <span className="hint-title">INDICE 1</span>
-            {showHintText && (
-              <p className="hint-text">{currentQuestion.hints.text}</p>
-            )}
+            {showHintText && <p className="hint-text">{currentQuestion.hints.text}</p>}
           </div>
 
           <div className="hint-item">
-            <button className="toggle-btn" onClick={toggleHintImage}>
+            <button
+              className={`toggle-btn ${!showHintText ? "disabled" : ""}`}
+              onClick={toggleHintImage}
+              disabled={!showHintText} // Désactiver le bouton si le 1ᵉʳ indice n'est pas ouvert
+            >
               {showHintImage ? "−" : "+"}
             </button>
             <span className="hint-title">INDICE 2</span>
             {showHintImage && currentQuestion.hints.image && (
-              <img
-                src={`/${currentQuestion.hints.image}`}
-                alt="Indice"
-                className="hint-img"
-              />
+              <img src={`/${currentQuestion.hints.image}`} alt="Indice" className="hint-img" />
             )}
           </div>
         </div>
