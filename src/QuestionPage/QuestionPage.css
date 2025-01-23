@@ -34,8 +34,8 @@ body {
   .answers {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-bottom: 20px; 
   }
   
   .answer-btn {
@@ -100,4 +100,63 @@ body {
     background-color: #0d192e;
     color: white;
   }
+  .hint {
+    margin-top: 10px;
+    font-style: italic;
+    color: #0d192e;
+    background-color: #f0e6d2;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .hint-img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  .hints-container {
+    margin-top: 20px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .hint-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .toggle-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .hint-title {
+    font-weight: bold;
+    font-style: italic;
+    margin-right: 5px;
+  }
+  
+  .hint-text {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .hint-img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  
+  
   

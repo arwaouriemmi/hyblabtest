@@ -1,61 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import yaml from "js-yaml"; // Pour lire le fichier YAML
 import "./QuestionPage.css";
 
-const questions = [
-  {
-    text: "À quel royaume appartenait Douai avant le traité des Pyrénées de 1659 ?",
-    options: ["Le royaume de Hollande", "Le royaume d’Espagne", "La Prusse"],
-    answer: "Le royaume d’Espagne",
-    hint: "Ce royaume possédait de nombreuses régions du nord de la France avant 1659."
-  },
-  {
-    text: "Quelle équipe a remporté le Tour de France en 2023 ?",
-    options: ["Jumbo-Visma", "UAE Team Emirates", "Ineos Grenadiers"],
-    answer: "Jumbo-Visma",
-    hint: "Cette équipe domine le cyclisme depuis quelques années."
-  },
-  {
-    text: "Quel coureur détient le record de victoires sur le Tour de France ?",
-    options: ["Eddy Merckx", "Bernard Hinault", "Chris Froome"],
-    answer: "Eddy Merckx",
-    hint: "Ce coureur belge est une légende du cyclisme."
-  }
-];
-
 const QuestionPage = () => {
+  const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [showHint, setShowHint] = useState(false);
+  const [showHintText, setShowHintText] = useState(false);
+  const [showHintImage, setShowHintImage] = useState(false);
+
+  // Charger les questions depuis le fichier YAML
+  useEffect(() => {
+    fetch("/data/questions.yaml")
+      .then((response) => response.text())
+      .then((text) => {
+        const data = yaml.load(text);
+        setQuestions(data.game.levels[0].stages[0].questions);
+      })
+      .catch((error) => console.error("Erreur de chargement YAML :", error));
+  }, []);
+
+  if (questions.length === 0) {
+    return <p>Chargement des questions...</p>;
+  }
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowHint(false);
+      setShowHintText(false);
+      setShowHintImage(false);
     }
   };
 
-  const handleHint = () => {
-    setShowHint(true);
+  const toggleHintText = () => {
+    setShowHintText(!showHintText);
   };
+
+  const toggleHintImage = () => {
+    setShowHintImage(!showHintImage);
+  };
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   return (
     <div className="question-container">
-      <h2 className="question-number">QUESTION {currentQuestionIndex + 1}/{questions.length}</h2>
+      <h2 className="question-number">
+        QUESTION {currentQuestionIndex + 1}/{questions.length}
+      </h2>
+
       <div className="question-box">
-        <p className="question-text">{questions[currentQuestionIndex].text}</p>
+        <p className="question-text">{currentQuestion.text}</p>
 
         <div className="answers">
-          {questions[currentQuestionIndex].options.map((option, index) => (
+          {currentQuestion.options.map((option, index) => (
             <button key={index} className="answer-btn">
-              {option}
+              {option.text}
             </button>
           ))}
         </div>
 
-        {showHint && <p className="hint">{questions[currentQuestionIndex].hint}</p>}
+        <button className="next-btn" onClick={handleNext}>
+          SUIVANT
+        </button>
 
-        <div className="buttons">
-          <button className="hint-btn" onClick={handleHint}>INDICE</button>
-          <button className="next-btn" onClick={handleNext}>SUIVANT</button>
+        {/* Indices */}
+        <div className="hints-container">
+          <div className="hint-item">
+            <button className="toggle-btn" onClick={toggleHintText}>
+              {showHintText ? "−" : "+"}
+            </button>
+            <span className="hint-title">INDICE 1</span>
+            {showHintText && <p className="hint-text">{currentQuestion.hints.text}</p>}
+          </div>
+
+          <div className="hint-item">
+            <button className="toggle-btn" onClick={toggleHintImage}>
+              {showHintImage ? "−" : "+"}
+            </button>
+            <span className="hint-title">INDICE 2</span>
+            {showHintImage && currentQuestion.hints.image && (
+              <img src={`/${currentQuestion.hints.image}`} alt="Indice" className="hint-img" />
+            )}
+          </div>
         </div>
       </div>
     </div>
