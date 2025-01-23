@@ -60,13 +60,12 @@ const QuestionPage = () => {
           {currentQuestion.options.map((option, index) => (
             <button
               key={index}
-              className={`answer-btn ${
-                selectedOptionIndex === index
+              className={`answer-btn ${selectedOptionIndex === index
                   ? option.correct
                     ? "correct"
                     : "wrong"
                   : ""
-              }`}
+                }`}
               onClick={() => handleOptionClick(index)}
               disabled={selectedOptionIndex !== null} // Désactiver après une sélection
             >
@@ -74,6 +73,20 @@ const QuestionPage = () => {
             </button>
           ))}
         </div>
+
+        {/* Lien global vers l'article */}
+        {currentQuestion.hints.link && (
+          <p className="article-link">
+            <a
+              href={currentQuestion.hints.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Lien vers l'article
+            </a>
+          </p>
+        )}
+
 
         <button
           className="next-btn"
@@ -90,7 +103,9 @@ const QuestionPage = () => {
               {showHintText ? "−" : "+"}
             </button>
             <span className="hint-title">INDICE 1</span>
-            {showHintText && <p className="hint-text">{currentQuestion.hints.text}</p>}
+            {showHintText && (
+              <p className="hint-text">{currentQuestion.hints.text}</p>
+            )}
           </div>
 
           <div className="hint-item">
@@ -99,7 +114,11 @@ const QuestionPage = () => {
             </button>
             <span className="hint-title">INDICE 2</span>
             {showHintImage && currentQuestion.hints.image && (
-              <img src={`/${currentQuestion.hints.image}`} alt="Indice" className="hint-img" />
+              <img
+                src={`/${currentQuestion.hints.image}`}
+                alt="Indice"
+                className="hint-img"
+              />
             )}
           </div>
         </div>
